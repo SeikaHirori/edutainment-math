@@ -18,19 +18,27 @@ final class edutainment_mathTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func test_multiplication() throws {
+        let result_1: Double = 0.0
+        let output_1: Double = multiplication(0, 200)
+        XCTAssertEqual(output_1, result_1, "Multiplying by 0 should result in 0")
+        
+        let result_2: Double = 10
+        let output_2: Double = multiplication(5, 2)
+        XCTAssertEqual(output_2, result_2, "Multiplying 5 by 2 should equal to 10")
+        
+        let result_3: Double = -20
+        let output_3: Double = multiplication(10, -2)
+        XCTAssertEqual(output_3, result_3, "Multiplying 10 by -2 should equal to -20; it should be a negative value.")
+
+        
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+//    func testPerformanceExample() throws {
+//        // This is an example of a performance test case.
+//        self.measure {
+//            // Put the code you want to measure the time of here.
+//        }
+//    }
 
 }

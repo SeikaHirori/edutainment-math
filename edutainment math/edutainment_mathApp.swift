@@ -15,3 +15,11 @@ struct edutainment_mathApp: App {
         }
     }
 }
+
+func multiplication(_ input_1:Double, _ input_2:Double) -> Double {
+    var output:Double
+    
+    output = input_1 * input_2
+    
+    return output
+}
