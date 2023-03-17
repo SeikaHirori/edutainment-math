@@ -14,6 +14,7 @@
 		3FEBD37429C4F7F0009E1F44 /* edutainment_mathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD37329C4F7F0009E1F44 /* edutainment_mathTests.swift */; };
 		3FEBD37E29C4F7F0009E1F44 /* edutainment_mathUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD37D29C4F7F0009E1F44 /* edutainment_mathUITests.swift */; };
 		3FEBD38029C4F7F0009E1F44 /* edutainment_mathUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD37F29C4F7F0009E1F44 /* edutainment_mathUITestsLaunchTests.swift */; };
+		3FEBD39029C4FF6B009E1F44 /* rfer.md in Resources */ = {isa = PBXBuildFile; fileRef = 3FEBD38F29C4FF6B009E1F44 /* rfer.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,8 @@
 		3FEBD37929C4F7F0009E1F44 /* edutainment mathUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "edutainment mathUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FEBD37D29C4F7F0009E1F44 /* edutainment_mathUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = edutainment_mathUITests.swift; sourceTree = "<group>"; };
 		3FEBD37F29C4F7F0009E1F44 /* edutainment_mathUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = edutainment_mathUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		3FEBD38C29C4FF2E009E1F44 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		3FEBD38F29C4FF6B009E1F44 /* rfer.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = rfer.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +77,8 @@
 		3FEBD35629C4F7EE009E1F44 = {
 			isa = PBXGroup;
 			children = (
+				3FEBD38D29C4FF39009E1F44 /* _docs */,
+				3FEBD38C29C4FF2E009E1F44 /* README.md */,
 				3FEBD36129C4F7EE009E1F44 /* edutainment math */,
 				3FEBD37229C4F7F0009E1F44 /* edutainment mathTests */,
 				3FEBD37C29C4F7F0009E1F44 /* edutainment mathUITests */,
@@ -125,6 +130,14 @@
 				3FEBD37F29C4F7F0009E1F44 /* edutainment_mathUITestsLaunchTests.swift */,
 			);
 			path = "edutainment mathUITests";
+			sourceTree = "<group>";
+		};
+		3FEBD38D29C4FF39009E1F44 /* _docs */ = {
+			isa = PBXGroup;
+			children = (
+				3FEBD38F29C4FF6B009E1F44 /* rfer.md */,
+			);
+			path = _docs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,6 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FEBD39029C4FF6B009E1F44 /* rfer.md in Resources */,
 				3FEBD36A29C4F7F0009E1F44 /* Preview Assets.xcassets in Resources */,
 				3FEBD36729C4F7F0009E1F44 /* Assets.xcassets in Resources */,
 			);
