@@ -22,6 +22,8 @@ ___
 - [ ] The player should be able to select how many questions they want to be asked: 5, 10, or 20.
 
 - [ ] You should randomly generate as many questions as they asked for, within the difficulty range they asked for.
+    - My note:
+        - Generate random values, and put into dictionary it doesn't exists
 
 - [ ] Start with an App template, then add some state to determine whether the game is active or whether you’re asking for settings.
 
