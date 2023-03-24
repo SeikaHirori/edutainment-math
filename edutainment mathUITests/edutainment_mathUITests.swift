@@ -30,12 +30,16 @@ final class edutainment_mathUITests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+    func test_generate_multiplication_question() throws {
+        let expectation_question_1: [String: Double] = [
+            "input_1": 2,
+            "input_2": 5,
+            "product": 10,
+        ]
+        let output_1: [String: Double] = generate_multiplication_question(input_1:2, input_2:5)
+        
+        XCTAssertEqual(expectation_question_1, output_1)
+        
+        
     }
 }
