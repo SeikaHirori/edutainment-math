@@ -13,36 +13,56 @@ struct Question {
     let input_1: Double
     let input_2: Double
     
-    func multiplication() -> Double {
-        var output:Double
-        
-        output = input_1 * input_2
-        
-        return output
-    }
+    let product: Double
     
-    func addition() -> Double {
-        var output:Double
-        
-        output = input_1 + input_2
-        
-        return output
-    }
+    let sum: Double
+    let difference: Double
+    let quotient: Double
     
-    func subtraction() -> Double {
-        var output: Double
-        
-        output = input_1 - input_2
-        
-        return output
-    }
     
-    func division() -> Double {
-        var output: Double
+    init(questionNumber: Int, input_1: Double, input_2: Double) {
+        self.questionNumber = questionNumber
+        self.input_1 = input_1
+        self.input_2 = input_2
         
-        output = input_1 / input_2
+        self.product = multiplication(input_1, input_2)
         
-        return output
+        self.sum = addition(input_1, input_2)
+        self.difference = subtraction(input_1, input_2)
+        self.quotient = division(input_1, input_2)
     }
+
+}
+
+
+func multiplication(_ input1: Double, _ input2: Double) -> Double {
+    var output:Double
     
+    output = input1 * input2
+    
+    return output
+}
+
+func addition(_ input1: Double, _ input2: Double) -> Double {
+    var output:Double
+    
+    output = input1 + input2
+    
+    return output
+}
+
+func subtraction(_ input1: Double, _ input2: Double) -> Double {
+    var output: Double
+    
+    output = input1 - input2
+    
+    return output
+}
+
+func division(_ input1: Double, _ input2: Double) -> Double {
+    var output: Double
+    
+    output = input1 / input2
+    
+    return output
 }

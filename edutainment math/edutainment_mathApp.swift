@@ -16,13 +16,6 @@ struct edutainment_mathApp: App {
     }
 }
 
-func multiplication(_ input_1:Double, _ input_2:Double) -> Double {
-    var output:Double
-    
-    output = input_1 * input_2
-    
-    return output
-}
 
 func generate_multiplication_question(input_1: Double, input_2: Double) -> [String: Double] {
     var output: [String: Double] = [String:Double]()

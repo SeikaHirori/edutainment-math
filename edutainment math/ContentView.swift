@@ -31,6 +31,7 @@ struct fun_math_time: View {
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
             Text("Hello, world :333")
+            Text()
         }
         .padding()
     }
