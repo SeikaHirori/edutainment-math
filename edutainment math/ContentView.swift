@@ -44,26 +44,10 @@ struct fun_math_time: View {
             
             List {
                 Section("Muiltiplication Table") {
-                    Stepper("Least: \(least_range.formatted())", onIncrement: {
-                        if least_range < 12 {
-                            least_range += 1
-                        }
-                    }, onDecrement: {
-                        if least_range > 2 {
-                            least_range -= 1
-                        }
-                    }
+                    Stepper("Least: \(least_range.formatted())", value: $least_range, in: 2...12
                     )
                     
-                    Stepper("Greatest: \(greatest_range.formatted())", onIncrement: {
-                        if greatest_range < 12 {
-                            greatest_range += 1
-                        }
-                    }, onDecrement: {
-                        if greatest_range > 2 {
-                            greatest_range -= 1
-                        }
-                    }
+                    Stepper("Greatest: \(greatest_range.formatted())", value: $greatest_range, in:2...12
                     )
                 }
                 
