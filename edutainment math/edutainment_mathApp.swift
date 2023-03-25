@@ -40,5 +40,13 @@ func set_of_questions(_ amount: Int) -> [Dictionary<String, Double>] {
     
     
     
+    for _ in 0..<amount {
+        
+        var question:Dictionary<String, Double> = [:]
+        
+        
+        output.append(question)
+    }
+    
     return output
 }
