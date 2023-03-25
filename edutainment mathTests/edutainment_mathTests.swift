@@ -35,10 +35,14 @@ final class edutainment_mathTests: XCTestCase {
     }
 
     func test_generate_multiplication_question() throws {
+        let expect_input_1:Double = 2
+        let expect_input_2:Double = 5
+        let expect_product:Double = 10
+        
         let expectation_question_1: [String: Double] = [
-            "input_1": 2,
-            "input_2": 5,
-            "product": 10,
+            "input_1": expect_input_1,
+            "input_2": expect_input_2,
+            "product": expect_product,
         ]
         let output_1: [String: Double] = generate_multiplication_question(input_1:2, input_2:5)
         
