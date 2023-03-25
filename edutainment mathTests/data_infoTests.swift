@@ -22,6 +22,7 @@ final class data_infoTests: XCTestCase {
         let question_1: Int = 1
         let q1_input_1: Double = 2
         let q1_input_2: Double = 5
+        
         let q1_product: Double = multiplication(q1_input_1, q1_input_2)
         let q1_difference: Double = 2 - 5
         let q1_sum: Double = 2 + 5

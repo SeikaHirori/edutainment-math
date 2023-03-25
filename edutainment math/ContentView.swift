@@ -22,6 +22,16 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct fun_math_time: View {
+    @State private var amount_of_questions: Int = 5
+    @State private var question_set: [Question] = []
+    
+    @State private var current_question_count: Int = 0
+    @State private var correct_answers: Int = 0
+    
+    @State private var least_range: Double = 2
+    @State private var greatest_range: Double = 12
+    
+    @State private var settings_mode: Bool = false
     
     
     
@@ -31,7 +41,45 @@ struct fun_math_time: View {
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
             Text("Hello, world :333")
-            Text(":3")
+            
+            List {
+                Section("Muiltiplication Table") {
+                    Stepper("Least: \(least_range.formatted())", onIncrement: {
+                        if least_range < 12 {
+                            least_range += 1
+                        }
+                    }, onDecrement: {
+                        if least_range > 2 {
+                            least_range -= 1
+                        }
+                    }
+                    )
+                    
+                    Stepper("Greatest: \(greatest_range.formatted())", onIncrement: {
+                        if greatest_range < 12 {
+                            greatest_range += 1
+                        }
+                    }, onDecrement: {
+                        if greatest_range > 2 {
+                            greatest_range -= 1
+                        }
+                    }
+                    )
+                }
+                
+                Section("Debugging"){
+                    // Debugging purposes
+                    VStack {
+                        Text("Select amount of questions: \(amount_of_questions)")
+                        Text("Question #\(current_question_count + 1)")
+                        Text("Correct Answers: \(correct_answers)")
+                        
+                        Text("Is it settings mode state: \(String(settings_mode))")
+                    }
+                    .padding()
+                    
+                }
+            }
         }
         .padding()
     }
