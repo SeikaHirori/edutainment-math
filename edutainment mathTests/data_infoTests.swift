@@ -34,6 +34,18 @@ final class data_infoTests: XCTestCase {
         XCTAssertEqual(q1_output.difference, q1_difference)
         XCTAssertEqual(q1_output.sum, q1_sum)
         XCTAssertEqual(q1_output.quotient, q1_quotient)
+        
+        // Check strings for questions and answers
+        let question_product1: String = "What is 2 x 5"
+        let answer_product1: String = "The product is 10"
+        XCTAssertEqual(q1_output.question_product(), question_product1)
+        XCTAssertEqual(q1_output.answer_product(), answer_product1)
+        
+        let question_sum1: String = "What is 2 + 5"
+        let answer_sum1: String = "The sum is 7"
+        XCTAssertEqual(q1_output.question_sum(), question_sum1)
+        XCTAssertEqual(q1_output.answer_sum(), answer_sum1)
+        
     }
     
 //    func testExample() throws {

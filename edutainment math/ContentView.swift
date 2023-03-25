@@ -22,6 +22,8 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct fun_math_time: View {
+    
+    let selectable_amount: [Int] = [5, 10, 20]
     @State private var amount_of_questions: Int = 5
     @State private var question_set: [Question] = []
     
@@ -49,6 +51,15 @@ struct fun_math_time: View {
                     
                     Stepper("Greatest: \(greatest_range.formatted())", value: $greatest_range, in:2...12
                     )
+                }
+                
+                Section("Select amount of questions") {
+                    Picker("How many questions?", selection: $amount_of_questions) {
+                        ForEach(selectable_amount, id: \.self) { num in
+                            Text(String(num))
+                        }
+                    }
+                    .pickerStyle(.segmented)
                 }
                 
                 Section("Debugging"){

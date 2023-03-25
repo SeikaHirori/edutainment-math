@@ -31,6 +31,29 @@ struct Question {
         self.difference = subtraction(input_1, input_2)
         self.quotient = division(input_1, input_2)
     }
+    
+    func question_product() -> String {
+        let output: String = "What is \(input_1.formatted()) x \(input_2.formatted())"
+        return output
+    }
+    
+    func answer_product() -> String {
+        let output: String = "The product is \(product.formatted())"
+        return output
+    }
+    
+    
+    func question_sum() -> String {
+        let output:String = "What is \(input_1.formatted()) + \(input_2.formatted())"
+        return output
+    }
+    
+    func answer_sum() -> String {
+        let output:String = "The sum is \(sum.formatted())"
+        return output
+    }
+    
+    // TODO:  Write functions for difference and quotient
 
 }
 

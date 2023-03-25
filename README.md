@@ -17,13 +17,15 @@ ___
 
 ** Checklist | Challenge Specifications (CS) **
 
-- [ ]  The player needs to select which multiplication tables they want to practice. This could be pressing buttons, or it could be an “Up to…” stepper, going from 2 to 12.
+- [x]  The player needs to select which multiplication tables they want to practice. This could be pressing buttons, or it could be an “Up to…” stepper, going from 2 to 12.
 
-- [ ] The player should be able to select how many questions they want to be asked: 5, 10, or 20.
+- [x] The player should be able to select how many questions they want to be asked: 5, 10, or 20.
 
 - [ ] You should randomly generate as many questions as they asked for, within the difficulty range they asked for.
     - My note:
-        - Generate random values, and put into dictionary it doesn't exists
+        - ~~Generate random values, and put into dictionary it doesn't exists~~
+            - Using struct Question now
+        - Need to create function for creating set of questions
 
 - [ ] Start with an App template, then add some state to determine whether the game is active or whether you’re asking for settings.
 
