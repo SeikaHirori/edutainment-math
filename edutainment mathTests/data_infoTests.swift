@@ -23,8 +23,16 @@ final class data_infoTests: XCTestCase {
         let q1_input_1: Double = 2
         let q1_input_2: Double = 5
         let q1_product: Double = multiplication(q1_input_1, q1_input_2)
+        let q1_difference: Double = 2 - 5
+        let q1_sum: Double = 2 + 5
+        let q1_quotient: Double = 2 / 5
         
-        let question: Question = Question(number: question_1, input_1: q1_input_1, input_2: q1_input_2)
+        let q1_output: Question = Question(questionNumber: question_1, input_1: q1_input_1, input_2: q1_input_2)
+        
+        XCTAssertEqual(q1_output.multiplication(), q1_product)
+        XCTAssertEqual(q1_output.subtraction(), q1_difference)
+        XCTAssertEqual(q1_output.addition(), q1_sum)
+        XCTAssertEqual(q1_output.division(), q1_quotient)
     }
     
 //    func testExample() throws {
