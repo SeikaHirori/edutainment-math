@@ -19,17 +19,27 @@ final class data_infoTests: XCTestCase {
     }
 
     func test_structQuestion() throws {
-        let question_1: Int = 1
+        // Assign expected results
+        let question_1: Int = 0
         let q1_input_1: Double = 2
         let q1_input_2: Double = 5
         
-        let q1_product: Double = multiplication(q1_input_1, q1_input_2)
-        let q1_difference: Double = 2 - 5
-        let q1_sum: Double = 2 + 5
-        let q1_quotient: Double = 2 / 5
+        let q1_product: Double = q1_input_1 * q1_input_2
+        let q1_difference: Double = q1_input_1 - q1_input_2
+        let q1_sum: Double = q1_input_1 + q1_input_2
+        let q1_quotient: Double = q1_input_1 / q1_input_2
         
+        // Create struct for testing
         let q1_output: Question = Question(questionNumber: question_1, input_1: q1_input_1, input_2: q1_input_2)
         
+        // Check if question count is correct
+        XCTAssertEqual(q1_output.questionNumber, 1)
+        
+        let statement_question_number_1: String = "Question #1"
+        XCTAssertEqual(q1_output.this_is_question_number(), statement_question_number_1)
+        
+        
+        // Check if calcuations are correct
         XCTAssertEqual(q1_output.product, q1_product)
         XCTAssertEqual(q1_output.difference, q1_difference)
         XCTAssertEqual(q1_output.sum, q1_sum)

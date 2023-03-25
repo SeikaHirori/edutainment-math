@@ -25,7 +25,7 @@ struct fun_math_time: View {
     
     let selectable_amount: [Int] = [5, 10, 20]
     @State private var amount_of_questions: Int = 5
-    @State private var question_set: [Question] = []
+    @State private var question_set: [Question] = [Question(questionNumber: 1, input_1: 2, input_2: 5)]
     
     @State private var current_question_count: Int = 0
     @State private var correct_answers: Int = 0
@@ -42,7 +42,7 @@ struct fun_math_time: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
-            Text("Hello, world :333")
+            Text("Math time :333")
             
             List {
                 Section("Muiltiplication Table") {
@@ -73,6 +73,12 @@ struct fun_math_time: View {
                     }
                     .padding()
                     
+                }
+                
+                Section("Questions") {
+                    ForEach(question_set) { question in
+                        Text(question.this_is_question_number())
+                    }
                 }
             }
         }

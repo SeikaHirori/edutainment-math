@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct Question {
+struct Question: Identifiable {
+    let id: UUID
+    
     let questionNumber: Int
     
     let input_1: Double
@@ -21,7 +23,9 @@ struct Question {
     
     
     init(questionNumber: Int, input_1: Double, input_2: Double) {
-        self.questionNumber = questionNumber
+        // Following standard indexing practice, index starts at 0. So, add +1 to parameter "questionNumber" when assigning to "self.questionNumber"
+        self.questionNumber = questionNumber + 1
+        
         self.input_1 = input_1
         self.input_2 = input_2
         
@@ -30,6 +34,13 @@ struct Question {
         self.sum = addition(input_1, input_2)
         self.difference = subtraction(input_1, input_2)
         self.quotient = division(input_1, input_2)
+        
+        self.id = UUID()
+    }
+    
+    func this_is_question_number() -> String {
+        let output:String = "Question #\(questionNumber)"
+        return output
     }
     
     func question_product() -> String {
