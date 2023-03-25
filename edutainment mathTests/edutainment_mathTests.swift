@@ -34,6 +34,18 @@ final class edutainment_mathTests: XCTestCase {
         
     }
 
+    func test_generate_multiplication_question() throws {
+        let expectation_question_1: [String: Double] = [
+            "input_1": 2,
+            "input_2": 5,
+            "product": 10,
+        ]
+        let output_1: [String: Double] = generate_multiplication_question(input_1:2, input_2:5)
+        
+        XCTAssertEqual(expectation_question_1, output_1)
+        
+        
+    }
 //    func testPerformanceExample() throws {
 //        // This is an example of a performance test case.
 //        self.measure {
