@@ -34,3 +34,11 @@ func generate_multiplication_question(input_1: Double, input_2: Double) -> [Stri
     
     return output
 }
+
+func set_of_questions(_ amount: Int) -> [Dictionary<String, Double>] {
+    var output: [Dictionary<String, Double>] = []
+    
+    
+    
+    return output
+}

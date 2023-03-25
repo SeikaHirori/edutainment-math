@@ -50,6 +50,25 @@ final class edutainment_mathTests: XCTestCase {
         
         
     }
+    
+    func test_set_of_questions() throws {
+        let expected_size_of_5 = 5
+        let output_of_5: [Dictionary<String, Double>] = set_of_questions(5)
+        
+        XCTAssertEqual(output_of_5.count, expected_size_of_5)
+        
+        let expected_size_of_10 = 10
+        let output_of_10: [Dictionary<String, Double>] = set_of_questions(10)
+        
+        XCTAssertEqual(output_of_10.count, expected_size_of_10)
+        
+        let expected_size_of_20 = 20
+        let output_of_20: [Dictionary<String, Double>] = set_of_questions(20)
+        
+        XCTAssertEqual(output_of_20.count, expected_size_of_20)
+        
+
+    }
 //    func testPerformanceExample() throws {
 //        // This is an example of a performance test case.
 //        self.measure {
