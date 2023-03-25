@@ -29,10 +29,10 @@ final class data_infoTests: XCTestCase {
         
         let q1_output: Question = Question(questionNumber: question_1, input_1: q1_input_1, input_2: q1_input_2)
         
-        XCTAssertEqual(q1_output.multiplication(), q1_product)
-        XCTAssertEqual(q1_output.subtraction(), q1_difference)
-        XCTAssertEqual(q1_output.addition(), q1_sum)
-        XCTAssertEqual(q1_output.division(), q1_quotient)
+        XCTAssertEqual(q1_output.product, q1_product)
+        XCTAssertEqual(q1_output.difference, q1_difference)
+        XCTAssertEqual(q1_output.sum, q1_sum)
+        XCTAssertEqual(q1_output.quotient, q1_quotient)
     }
     
 //    func testExample() throws {
