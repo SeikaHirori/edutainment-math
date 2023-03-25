@@ -84,4 +84,8 @@ struct fun_math_time: View {
         }
         .padding()
     }
+    
+    func create_set_questions() -> () {
+        fatalError("Create the set of questions :3")
+    }
 }
