@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var view_selection:String? = nil
     
     @State private var amount_of_questions: Int = 5
     @State private var question_set: [Question] = [Question(questionNumber: 0, input_1: 2, input_2: 5)]
+    @State private var selected_math_operation:math_operation = math_operation.multiplication
     
     @State private var current_question_count: Int = 0
     @State private var correct_answers: Int = 0
@@ -21,28 +23,22 @@ struct ContentView: View {
     @State private var settings_mode: Bool = false
     
     var body: some View {
-        return VStack {
-            NavigationView {
-                
-                VStack() {
-
-                    NavigationLink("Settings", destination: settings(amount_of_questions: $amount_of_questions, question_set: $question_set, current_question_count: $current_question_count, correct_answers: $correct_answers, least_range: $least_range, greatest_range: $greatest_range, settings_mode: $settings_mode)
-                    )
-                    .backgroundStyle(.red)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
+        NavigationView {
+            VStack (spacing: 20) {
+                NavigationLink(destination: settings(amount_of_questions: $amount_of_questions, question_set: $question_set, selected_math_operation: $selected_math_operation, current_question_count: $current_question_count, correct_answers: $correct_answers, least_range: $least_range, greatest_range: $greatest_range, settings_mode: $settings_mode)) {
                     
-                    math_fun_time()
-
+                    Text("Settings")
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Text("math")
                 
+                math_fun_time()
             }
-            .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
-            .padding()
-
         }
+        .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
+        .padding()
     }
+    
     
     struct ContentView_Previews: PreviewProvider {
         static var previews: some View {
@@ -52,10 +48,18 @@ struct ContentView: View {
     
     struct settings: View {
         let selectable_amount: [Int] = [5, 10, 20]
+        let selectable_math_operations: [String] = [
+            "Addition",
+            "Subtraction",
+            "Multiplication",
+            "Division",
+        ]
         
         
         @Binding var amount_of_questions: Int
         @Binding var question_set: [Question]
+        @Binding var selected_math_operation:math_operation
+
         
         @Binding var current_question_count: Int
         @Binding var correct_answers: Int
@@ -90,8 +94,19 @@ struct ContentView: View {
                         }
                         .pickerStyle(.segmented)
 
+                        
                     }
                     
+                    Section("Math Operation") {
+                        Picker("Selected your desired operation", selection: $selected_math_operation.onChange() {_ in new_game_state()}) {
+                        
+                            ForEach(math_operation.allCases, id: \.self
+                            ) {
+                                Text($0.rawValue)
+                            }
+                        }
+                        .pickerStyle(.automatic)
+                    }
                     
                     Section("Debugging"){
                         // Debugging purposes
@@ -101,6 +116,7 @@ struct ContentView: View {
                             Text("Correct Answers: \(correct_answers)")
                             
                             Text("Is it settings mode state: \(String(settings_mode))")
+                            Text("Operation: \(selected_math_operation.rawValue)")
                         }
                         .padding()
                         
@@ -115,6 +131,7 @@ struct ContentView: View {
             }
             .padding()
             .onAppear(perform: create_set_questions)
+            .backgroundStyle(.primary)
         }
         
         func new_game_state() {

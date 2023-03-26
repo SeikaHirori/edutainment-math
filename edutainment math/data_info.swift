@@ -88,3 +88,9 @@ struct Question: Identifiable {
 
 }
 
+enum math_operation:String, CaseIterable {
+    case additional = "Addition"
+    case subtraction = "Subtraction"
+    case multiplication = "Multiplication"
+    case division = "Division"
+}
