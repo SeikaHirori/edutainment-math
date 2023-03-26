@@ -38,9 +38,8 @@ struct ContentView: View {
                 }
                 
             }
-            
-                .padding()
-            
+            .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
+            .padding()
 
         }
     }
@@ -134,10 +133,7 @@ struct ContentView: View {
                 let new_input_1: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
                 let new_input_2: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
                 let new_question:Question = Question(questionNumber: index, input_1: new_input_1, input_2: new_input_2)
-                
-                if is_it_a_duplicate_question {
-                    continue
-                }
+
                 // Add to list and continue to loop
                 create_set_questions.append(new_question)
                 index += 1
