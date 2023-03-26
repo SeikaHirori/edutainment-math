@@ -14,28 +14,36 @@ struct ContentView: View {
     @State private var question_set: [Question] = [Question(questionNumber: 0, input_1: 2, input_2: 5)]
     @State private var selected_math_operation:math_operation = math_operation.multiplication
     
-    @State private var current_question_count: Int = 0
-    @State private var correct_answers: Int = 0
-    
     @State private var least_range: Double = 2
     @State private var greatest_range: Double = 12
     
+    // Currently not used
     @State private var settings_mode: Bool = false
     
+    @State private var current_question_count: Int = 0
+    @State private var correct_answers: Int = 0
+    
     var body: some View {
-        NavigationView {
-            VStack (spacing: 20) {
-                NavigationLink(destination: settings(amount_of_questions: $amount_of_questions, question_set: $question_set, selected_math_operation: $selected_math_operation, current_question_count: $current_question_count, correct_answers: $correct_answers, least_range: $least_range, greatest_range: $greatest_range, settings_mode: $settings_mode)) {
+        NavigationStack {
+            ZStack(alignment: .top) {
+                ZStack {
+                    VStack (spacing: 5) {
+                        NavigationLink(destination: settings(amount_of_questions: $amount_of_questions, question_set: $question_set, selected_math_operation: $selected_math_operation, current_question_count: $current_question_count, correct_answers: $correct_answers, least_range: $least_range, greatest_range: $greatest_range, settings_mode: $settings_mode)) {
+                            
+                            Text("Settings")
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        Spacer()
+                    }
                     
-                    Text("Settings")
+                    VStack {
+                        math_fun_time()
+                    }
+                    
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                Text("math")
-                
-                math_fun_time()
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
+//        .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
         .padding()
     }
     
@@ -164,8 +172,10 @@ struct ContentView: View {
 struct math_fun_time: View {
     
     var body: some View {
-        return NavigationStack {
-            Text("Hello world!")
+        return VStack {
+            ForEach(0..<12) { _ in
+                Text("Hello world!")
+            }
         }
     }
     
