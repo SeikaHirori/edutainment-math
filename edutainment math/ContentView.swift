@@ -25,7 +25,7 @@ struct fun_math_time: View {
     
     let selectable_amount: [Int] = [5, 10, 20]
     @State private var amount_of_questions: Int = 5
-    @State private var question_set: [Question] = [Question(questionNumber: 1, input_1: 2, input_2: 5)]
+    @State private var question_set: [Question] = [Question(questionNumber: 0, input_1: 2, input_2: 5)]
     
     @State private var current_question_count: Int = 0
     @State private var correct_answers: Int = 0
@@ -62,6 +62,7 @@ struct fun_math_time: View {
                     .pickerStyle(.segmented)
                 }
                 
+                
                 Section("Debugging"){
                     // Debugging purposes
                     VStack {
@@ -77,15 +78,49 @@ struct fun_math_time: View {
                 
                 Section("Questions") {
                     ForEach(question_set) { question in
-                        Text(question.this_is_question_number())
+                        Text(question.question_product())
                     }
                 }
             }
         }
         .padding()
+        .onAppear(perform: create_set_questions)
+    }
+    
+    func new_game_state() -> () {
+        create_set_questions()
     }
     
     func create_set_questions() -> () {
-        fatalError("Create the set of questions :3")
+        var create_set_questions: [Question] = []
+        
+        var index:Int = 0
+        while index < amount_of_questions {
+            let input_1: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
+            let input_2: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
+            
+            let new_question:Question = Question(questionNumber: index, input_1: input_1, input_2: input_2)
+            
+            create_set_questions.append(new_question)
+            
+            index += 1
+        }
+        
+        question_set = create_set_questions
     }
+}
+
+extension Binding {
+    
+    // RFER #1
+    func onChange(_ handler: @escaping (Value) -> Void) -> Binding<Value> {
+        Binding(
+            get: { self.wrappedValue },
+            set: {
+                self.wrappedValue = $0
+                handler($0)
+            }
+        )
+    }
+    
 }
