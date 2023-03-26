@@ -37,10 +37,11 @@ struct ContentView: View {
                     }
                     
                     VStack {
-                        math_fun_time()
+                        math_fun_time(question_set: $question_set, selected_math_operation: $selected_math_operation, current_question_count: $current_question_count, correct_answers: $correct_answers)
                     }
                     
                 }
+                
             }
         }
 //        .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
@@ -118,7 +119,7 @@ struct ContentView: View {
                     
                     Section("Debugging"){
                         // Debugging purposes
-                        VStack {
+                        VStack (alignment:.center) {
                             Text("Select amount of questions: \(amount_of_questions)")
                             Text("Question #\(current_question_count + 1)")
                             Text("Correct Answers: \(correct_answers)")
@@ -132,7 +133,14 @@ struct ContentView: View {
                     
                     Section("Questions") {
                         ForEach(question_set) { question in
-                            Text(question.product_question())
+                            switch selected_math_operation {
+                                case math_operation.multiplication:
+                                    Text(question.product_question())
+                                case math_operation.addition:
+                                    Text(question.sum_question())
+                                default:
+                                    Text("Error: WIP")
+                            }
                         }
                     }
                 }
@@ -171,13 +179,62 @@ struct ContentView: View {
 
 struct math_fun_time: View {
     
+    @Binding var question_set: [Question]
+    @Binding var selected_math_operation:math_operation
+
+    @Binding var current_question_count: Int
+    @Binding var correct_answers: Int
+    
+    
+    @State private var current_question: String? = nil
+    @State private var answer: Double? = nil
+    
+    
     var body: some View {
         return VStack {
-            ForEach(0..<12) { _ in
-                Text("Hello world!")
-            }
+            Text("Hello :3\n")
+            
+            Text("Question #\(current_question_count + 1)")
+            Text("What is")
+            Text("\(current_question ?? "ERROR: Question not loaded")")
+            
+        }
+        .onAppear(perform: inital_launch)
+    }
+    
+    func inital_launch() {
+        load_data_of_question()
+    }
+    
+    func next_question() {
+        fatalError()
+    }
+    
+    func load_data_of_question() {
+        let item = question_set[current_question_count]
+        
+        switch selected_math_operation {
+        case math_operation.multiplication:
+            current_question = item.product_question()
+        default:
+            current_question = ":'("
+        }    }
+    
+    func user_submmited_answer() {
+        fatalError()
+        
+        if (current_question_count + 1) > question_set.count {
+            // Bring up results after answering all questions
+            fatalError()
+        } else {
+            current_question_count += 1
         }
     }
+    
+    func check_answer() {
+        fatalError()
+    }
+    
     
 }
 

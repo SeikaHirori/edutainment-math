@@ -53,6 +53,8 @@ struct Question: Identifiable {
         return output
     }
     
+    
+    
     func multiplication() -> Double {
         var output:Double
         
@@ -89,7 +91,7 @@ struct Question: Identifiable {
 }
 
 enum math_operation:String, CaseIterable {
-    case additional = "Addition"
+    case addition = "Addition"
     case subtraction = "Subtraction"
     case multiplication = "Multiplication"
     case division = "Division"
