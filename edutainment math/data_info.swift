@@ -15,25 +15,12 @@ struct Question: Identifiable {
     let input_1: Double
     let input_2: Double
     
-    let product: Double
-    
-    let sum: Double
-    let difference: Double
-    let quotient: Double
-    
-    
     init(questionNumber: Int, input_1: Double, input_2: Double) {
         // Following standard indexing practice, index starts at 0. So, add +1 to parameter "questionNumber" when assigning to "self.questionNumber"
         self.questionNumber = questionNumber + 1
         
         self.input_1 = input_1
         self.input_2 = input_2
-        
-        self.product = multiplication(input_1, input_2)
-        
-        self.sum = addition(input_1, input_2)
-        self.difference = subtraction(input_1, input_2)
-        self.quotient = division(input_1, input_2)
         
         self.id = UUID()
     }
@@ -43,60 +30,61 @@ struct Question: Identifiable {
         return output
     }
     
-    func question_product() -> String {
-        let output: String = "What is \(input_1.formatted()) x \(input_2.formatted())"
+    func product_question() -> String {
+        let output: String = "\(input_1.formatted()) x \(input_2.formatted())"
         return output
     }
     
-    func answer_product() -> String {
-        let output: String = "The product is \(product.formatted())"
+    func product_answer() -> String {
+        let result_product: Double = multiplication()
+        let output: String = "\(result_product.formatted())"
         return output
     }
     
     
-    func question_sum() -> String {
-        let output:String = "What is \(input_1.formatted()) + \(input_2.formatted())"
+    func sum_question() -> String {
+        let output:String = "\(input_1.formatted()) + \(input_2.formatted())"
         return output
     }
     
-    func answer_sum() -> String {
-        let output:String = "The sum is \(sum.formatted())"
+    func sum_answer() -> String {
+        let result_sum: Double = addition()
+        let output:String = "\(result_sum.formatted())"
         return output
     }
     
-    // TODO:  Write functions for difference and quotient
+    func multiplication() -> Double {
+        var output:Double
+        
+        output = input_1 * input_2
+        
+        return output
+    }
+
+    func addition() -> Double {
+        var output:Double
+        
+        output = input_1 + input_2
+        
+        return output
+    }
+
+    func subtraction() -> Double {
+        var output: Double
+        
+        output = input_1 - input_2
+        
+        return output
+    }
+
+    func division() -> Double {
+        var output: Double
+        
+        output = input_1 / input_2
+        
+        return output
+    }
+
 
 }
 
-
-func multiplication(_ input1: Double, _ input2: Double) -> Double {
-    var output:Double
-    
-    output = input1 * input2
-    
-    return output
-}
-
-func addition(_ input1: Double, _ input2: Double) -> Double {
-    var output:Double
-    
-    output = input1 + input2
-    
-    return output
-}
-
-func subtraction(_ input1: Double, _ input2: Double) -> Double {
-    var output: Double
-    
-    output = input1 - input2
-    
-    return output
-}
-
-func division(_ input1: Double, _ input2: Double) -> Double {
-    var output: Double
-    
-    output = input1 / input2
-    
-    return output
-}

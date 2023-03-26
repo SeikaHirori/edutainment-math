@@ -109,7 +109,7 @@ struct ContentView: View {
                     
                     Section("Questions") {
                         ForEach(question_set) { question in
-                            Text(question.question_product())
+                            Text(question.product_question())
                         }
                     }
                 }
@@ -129,30 +129,11 @@ struct ContentView: View {
             
             var index:Int = 0
             while index < amount_of_questions {
-                var is_it_a_duplicate_question:Bool = false
                 
                 // Create question
                 let new_input_1: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
                 let new_input_2: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
                 let new_question:Question = Question(questionNumber: index, input_1: new_input_1, input_2: new_input_2)
-                
-                
-//                // Check if there are duplicate values
-                    /*
-                        This idea is removed as it would cause a bootloop when the range is small.
-                     */
-//                for value in create_set_questions {
-//                    let val_1 = value.input_1
-//
-//                    if val_1 == new_input_1 {
-//                        let val_2 = value.input_2
-//
-//                        if val_2 == new_input_2 {
-//                            is_it_a_duplicate_question = true
-//                            break
-//                        }
-//                    }
-//                }
                 
                 if is_it_a_duplicate_question {
                     continue
