@@ -28,6 +28,9 @@ struct ContentView: View {
     // Keyboard
     @FocusState private var is_keyboard_focused: UUID?
     
+    // Session
+    @State private var game_session_finished: Bool = false
+    
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
@@ -228,7 +231,7 @@ struct math_fun_time: View {
             
                 Section("Submission") {
                     HStack {
-                        TextField("Submission.", value: $user_submission, format: .number)
+                        TextField("Submission", value: $user_submission, format: .number)
                             .focused(is_keyboard_focused, equals: UUID_is_keyboard_focused) // RFER #3
                             .keyboardType(.decimalPad)
                         Button("Submit") {
@@ -242,7 +245,6 @@ struct math_fun_time: View {
                 }
                 
                 Section("Result") {
-                    Text(result)
                     Text("Correct answers: \(correct_answers)")
                 }
                 
@@ -281,19 +283,29 @@ struct math_fun_time: View {
         
         
         let total_amount_of_questions: Int = question_set.count
+        
         let new_count:Int = current_question_count + 1
-        if new_count >= total_amount_of_questions{
+        
+        // New count should
+        if new_count < total_amount_of_questions {
+            
+            current_question_count = new_count
+            print("Index increased to: \(current_question_count) ")
+        } else {
             // Bring up results after answering all questions
             print("all questions done")
-            
-        } else {
-            current_question_count += 1
-            print("Index increased to: \(current_question_count) ")
         }
-        assert(new_count < total_amount_of_questions, "The new_count (index) '\(new_count)' should not be greater than or equal [>=] to the total amount of questions '\(total_amount_of_questions)'. This will cause the loading the next question to be out of array range.")
         
+                
         user_submission = nil
-        load_data_of_question()
+
+        if new_count < total_amount_of_questions {
+            load_data_of_question()
+        } else {
+            print("no more questions :'[ ")
+        }
+            
+        assert(new_count <= question_set.count, "The new_count (index) '\(new_count)' should not be greater than or equal [>=] to the total amount of questions '\(total_amount_of_questions)'. This will cause the loading the next question to be out of array range.")
 
     }
     
@@ -301,12 +313,7 @@ struct math_fun_time: View {
         
         if user_submission == answer {
             correct_answers += 1
-            result = "Correct :3"
-            
-        } else {
-            result = "ouch :'["
         }
-        
     }
     
     

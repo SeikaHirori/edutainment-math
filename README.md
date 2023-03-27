@@ -21,15 +21,15 @@ ___
 
 - [x] The player should be able to select how many questions they want to be asked: 5, 10, or 20.
 
-- [ ] You should randomly generate as many questions as they asked for, within the difficulty range they asked for.
+- [x] You should randomly generate as many questions as they asked for, within the difficulty range they asked for.
     - My note:
         - ~~Generate random values, and put into dictionary it doesn't exists~~
             - Using struct Question now
         - Need to create function for creating set of questions
 
-- [ ] Start with an App template, then add some state to determine whether the game is active or whether you’re asking for settings.
+- [x] Start with an App template, then add some state to determine whether the game is active or whether you’re asking for settings.
 
-- [ ] Generate a range of questions based on the user’s settings.
+- [x] Generate a range of questions based on the user’s settings.
 
 - [ ] Show the player how many questions they got correct at the end of the game, then offer to let them play again.
 
