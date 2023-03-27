@@ -227,9 +227,14 @@ struct math_fun_time: View {
             }
             
                 Section("Submission") {
-                    TextField("Submission.", value: $user_submission, format: .number)
-                        .focused(is_keyboard_focused, equals: UUID_is_keyboard_focused) // RFER #3
-                        .keyboardType(.decimalPad)
+                    HStack {
+                        TextField("Submission.", value: $user_submission, format: .number)
+                            .focused(is_keyboard_focused, equals: UUID_is_keyboard_focused) // RFER #3
+                            .keyboardType(.decimalPad)
+                        Button("Submit") { 
+                            user_submmited_answer()
+                        }
+                    }
                     
                 }
                 .onSubmit { // User needs to press "Enter" to check answer
