@@ -28,13 +28,31 @@ struct ContentView: View {
             ZStack(alignment: .top) {
                 ZStack {
                     VStack (spacing: 5) {
-                        NavigationLink(destination: settings(amount_of_questions: $amount_of_questions, question_set: $question_set, selected_math_operation: $selected_math_operation, current_question_count: $current_question_count, correct_answers: $correct_answers, least_range: $least_range, greatest_range: $greatest_range, settings_mode: $settings_mode)) {
+                        NavigationLink(destination: settings(
+                            amount_of_questions: $amount_of_questions.onChange() { _ in
+                            new_game_state()},
+                            question_set: $question_set.onChange() { _ in
+                                new_game_state()},
+                            selected_math_operation: $selected_math_operation.onChange() { _ in
+                                new_game_state()},
+                            current_question_count: $current_question_count.onChange() { _ in
+                                new_game_state()},
+                            correct_answers: $correct_answers.onChange() { _ in
+                                new_game_state()},
+                            least_range: $least_range.onChange() { _ in
+                                new_game_state()},
+                            greatest_range: $greatest_range.onChange() { _ in
+                                new_game_state()},
+                            settings_mode: $settings_mode)) {
                             
                             Text("Settings")
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
+
+                        
                         Spacer()
                     }
+                    
                     
                     VStack {
                         math_fun_time(question_set: $question_set, selected_math_operation: $selected_math_operation, current_question_count: $current_question_count, correct_answers: $correct_answers)
@@ -44,138 +62,132 @@ struct ContentView: View {
                 
             }
         }
-//        .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
+        //        .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
         .padding()
+        .onAppear(perform: new_game_state)
+
     }
     
     
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            ContentView()
+    func new_game_state() {
+        create_set_questions()
+        current_question_count = 0
+        correct_answers = 0
+    }
+    
+    func create_set_questions() {
+        var create_set_questions: [Question] = []
+        
+        var index:Int = 0
+        while index < amount_of_questions {
+            
+            // Create question
+            let new_input_1: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
+            let new_input_2: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
+            let new_question:Question = Question(questionNumber: index, input_1: new_input_1, input_2: new_input_2)
+
+            // Add to list and continue to loop
+            create_set_questions.append(new_question)
+            index += 1
         }
+        
+        question_set = create_set_questions
     }
+
+}
     
-    struct settings: View {
-        let selectable_amount: [Int] = [5, 10, 20]
-        let selectable_math_operations: [String] = [
-            "Addition",
-            "Subtraction",
-            "Multiplication",
-            "Division",
-        ]
-        
-        
-        @Binding var amount_of_questions: Int
-        @Binding var question_set: [Question]
-        @Binding var selected_math_operation:math_operation
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
 
-        
-        @Binding var current_question_count: Int
-        @Binding var correct_answers: Int
-        
-        @Binding var least_range: Double
-        @Binding var greatest_range: Double
-        
-        @Binding var settings_mode: Bool
-        
-        
-        var body: some View {
-            return VStack {
+struct settings: View {
+    let selectable_amount: [Int] = [5, 10, 20]
+
+    @Binding var amount_of_questions: Int
+    @Binding var question_set: [Question]
+    @Binding var selected_math_operation:math_operation
+
+    
+    @Binding var current_question_count: Int
+    @Binding var correct_answers: Int
+    
+    @Binding var least_range: Double
+    @Binding var greatest_range: Double
+    
+    @Binding var settings_mode: Bool
+    
+    
+    var body: some View {
+        return VStack {
+            
+            List {
+                Section("Muiltiplication Table") {
+                    Stepper("Least: \(least_range.formatted())", value: $least_range, in: 2...12
+                    )
+                    
+                    Stepper("Greatest: \(greatest_range.formatted())", value: $greatest_range, in:2...12
+                    )
+                }
                 
-                List {
-                    Section("Muiltiplication Table") {
-                        Stepper("Least: \(least_range.formatted())", value: $least_range.onChange() { _ in
-                            new_game_state()}, in: 2...12
-                        )
-                        
-                        Stepper("Greatest: \(greatest_range.formatted())", value: $greatest_range.onChange() { _ in
-                            new_game_state()}, in:2...12
-                        )
-                    }
-                    
-                    Section("Select amount of questions") {
-                        Picker("How many questions?",
-                               selection: $amount_of_questions.onChange() { _ in
-                                new_game_state()}) {
-                            ForEach(selectable_amount, id: \.self) { num in
-                                Text(String(num))
-                            }
+                Section("Select amount of questions") {
+                    Picker("How many questions?",
+                           selection: $amount_of_questions) {
+                        ForEach(selectable_amount, id: \.self) { num in
+                            Text(String(num))
                         }
-                        .pickerStyle(.segmented)
+                    }
+                    .pickerStyle(.segmented)
 
-                        
-                    }
                     
-                    Section("Math Operation") {
-                        Picker("Selected your desired operation", selection: $selected_math_operation.onChange() {_ in new_game_state()}) {
-                        
-                            ForEach(math_operation.allCases, id: \.self
-                            ) {
-                                Text($0.rawValue)
-                            }
+                }
+                
+                Section("Math Operation") {
+                    Picker("Selected your desired operation", selection: $selected_math_operation) {
+                    
+                        ForEach(math_operation.allCases, id: \.self
+                        ) {
+                            Text($0.rawValue)
                         }
-                        .pickerStyle(.automatic)
                     }
-                    
-                    Section("Debugging"){
-                        // Debugging purposes
-                        VStack (alignment:.center) {
-                            Text("Select amount of questions: \(amount_of_questions)")
-                            Text("Question #\(current_question_count + 1)")
-                            Text("Correct Answers: \(correct_answers)")
-                            
-                            Text("Is it settings mode state: \(String(settings_mode))")
-                            Text("Operation: \(selected_math_operation.rawValue)")
-                        }
-                        .padding()
+                    .pickerStyle(.automatic)
+                }
+                
+                Section("Debugging"){
+                    // Debugging purposes
+                    VStack (alignment:.center) {
+                        Text("Select amount of questions: \(amount_of_questions)")
+                        Text("Question #\(current_question_count + 1)")
+                        Text("Correct Answers: \(correct_answers)")
                         
+                        Text("Is it settings mode state: \(String(settings_mode))")
+                        Text("Operation: \(selected_math_operation.rawValue)")
                     }
+                    .padding()
                     
-                    Section("Questions") {
-                        ForEach(question_set) { question in
-                            switch selected_math_operation {
-                                case math_operation.multiplication:
-                                    Text(question.product_question())
-                                case math_operation.addition:
-                                    Text(question.sum_question())
-                                default:
-                                    Text("Error: WIP")
-                            }
+                }
+                
+                Section("Questions") {
+                    ForEach(question_set) { question in
+                        switch selected_math_operation {
+                            case math_operation.multiplication:
+                                Text(question.product_question())
+                            case math_operation.addition:
+                                Text(question.sum_question())
+                            default:
+                                Text("Error: WIP")
                         }
                     }
                 }
             }
-            .padding()
-            .onAppear(perform: create_set_questions)
-            .backgroundStyle(.primary)
         }
-        
-        func new_game_state() {
-            create_set_questions()
-            current_question_count = 0
-            correct_answers = 0
-        }
-        
-        func create_set_questions() {
-            var create_set_questions: [Question] = []
-            
-            var index:Int = 0
-            while index < amount_of_questions {
-                
-                // Create question
-                let new_input_1: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
-                let new_input_2: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
-                let new_question:Question = Question(questionNumber: index, input_1: new_input_1, input_2: new_input_2)
-
-                // Add to list and continue to loop
-                create_set_questions.append(new_question)
-                index += 1
-            }
-            
-            question_set = create_set_questions
-        }
+        .padding()
+        .backgroundStyle(.primary)
     }
+    
 }
+
 
 struct math_fun_time: View {
     
@@ -185,21 +197,42 @@ struct math_fun_time: View {
     @Binding var current_question_count: Int
     @Binding var correct_answers: Int
     
-    
     @State private var current_question: String? = nil
     @State private var answer: Double? = nil
     
+    @State private var user_submission: Double? = nil
+    
+    @State private var result:String = "waiting"
     
     var body: some View {
         return VStack {
+        
             Text("Hello :3\n")
+            List {
+                Section("Question #\(current_question_count + 1)"){
+
+                        Text("What is")
+                        Text("\(current_question ?? "ERROR: Question not loaded")")
+                
+            }
             
-            Text("Question #\(current_question_count + 1)")
-            Text("What is")
-            Text("\(current_question ?? "ERROR: Question not loaded")")
-            
+                Section("Submission") {
+                    TextField("Submission.", value: $user_submission, format: .number)
+                }
+                .onSubmit { // User needs to press "Enter" to check answer
+                    user_submmited_answer()
+                }
+                
+                Section("Result") {
+                    Text(result)
+                    Text("Correct answers: \(correct_answers)")
+                }
+                
+                
+            }
         }
         .onAppear(perform: inital_launch)
+        
     }
     
     func inital_launch() {
@@ -207,7 +240,7 @@ struct math_fun_time: View {
     }
     
     func next_question() {
-        fatalError()
+        
     }
     
     func load_data_of_question() {
@@ -216,23 +249,37 @@ struct math_fun_time: View {
         switch selected_math_operation {
         case math_operation.multiplication:
             current_question = item.product_question()
+            answer = item.multiplication()
         default:
             current_question = ":'("
-        }    }
+        }
+        
+    }
     
     func user_submmited_answer() {
-        fatalError()
+        check_answer_is_correct()
         
         if (current_question_count + 1) > question_set.count {
             // Bring up results after answering all questions
-            fatalError()
+            print(":3")
         } else {
             current_question_count += 1
         }
+        
+        load_data_of_question()
+        user_submission = nil
     }
     
-    func check_answer() {
-        fatalError()
+    func check_answer_is_correct() {
+        
+        if user_submission == answer {
+            correct_answers += 1
+            result = "Correct :3"
+            
+        } else {
+            result = "ouch :'["
+        }
+        
     }
     
     
