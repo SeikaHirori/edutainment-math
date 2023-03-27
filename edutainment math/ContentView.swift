@@ -231,7 +231,7 @@ struct math_fun_time: View {
                         TextField("Submission.", value: $user_submission, format: .number)
                             .focused(is_keyboard_focused, equals: UUID_is_keyboard_focused) // RFER #3
                             .keyboardType(.decimalPad)
-                        Button("Submit") { 
+                        Button("Submit") {
                             user_submmited_answer()
                         }
                     }
@@ -276,16 +276,25 @@ struct math_fun_time: View {
     
     func user_submmited_answer() {
         check_answer_is_correct()
+        print("Just checked answer")
+        print("index before modifying: \(current_question_count)")
         
-        if (current_question_count + 1) > question_set.count {
+        
+        let total_amount_of_questions: Int = question_set.count
+        let new_count:Int = current_question_count + 1
+        if new_count >= total_amount_of_questions{
             // Bring up results after answering all questions
-            print(":3")
+            print("all questions done")
+            
         } else {
             current_question_count += 1
+            print("Index increased to: \(current_question_count) ")
         }
+        assert(new_count < total_amount_of_questions, "The new_count (index) '\(new_count)' should not be greater than or equal [>=] to the total amount of questions '\(total_amount_of_questions)'. This will cause the loading the next question to be out of array range.")
         
-        load_data_of_question()
         user_submission = nil
+        load_data_of_question()
+
     }
     
     func check_answer_is_correct() {
