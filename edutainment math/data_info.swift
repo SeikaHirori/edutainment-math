@@ -90,6 +90,12 @@ struct Question: Identifiable {
 
 }
 
+struct session_info {
+    let session_number: Int
+    let correct_answers: Int
+    let total_questions: Int
+}
+
 enum math_operation:String, CaseIterable {
     case addition = "Addition"
     case subtraction = "Subtraction"

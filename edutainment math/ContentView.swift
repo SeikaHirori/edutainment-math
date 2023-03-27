@@ -31,55 +31,79 @@ struct ContentView: View {
     // Session
     @State private var game_session_finished: Bool = false
     
+    // Update game settings
+    @State private var go_update_questions: Bool = false
+    
+    // Game History
+    @State private var session_count:Int = 0
+    @State private var history_session_corrects:[session_info] = [session_info(session_number: 0, correct_answers: -1, total_questions: -1)]
+    
+    
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
                 ZStack {
                     VStack (spacing: 5) {
                         NavigationLink(destination: settings(
-                            amount_of_questions: $amount_of_questions.onChange() { _ in
-                            new_game_state()},
-                            question_set: $question_set.onChange() { _ in
-                                new_game_state()},
-                            selected_math_operation: $selected_math_operation.onChange() { _ in
-                                new_game_state()},
-                            current_question_count: $current_question_count.onChange() { _ in
-                                new_game_state()},
-                            correct_answers: $correct_answers.onChange() { _ in
-                                new_game_state()},
-                            least_range: $least_range.onChange() { _ in
-                                new_game_state()},
-                            greatest_range: $greatest_range.onChange() { _ in
-                                new_game_state()},
-                            settings_mode: $settings_mode)) {
-                            
+                            amount_of_questions: $amount_of_questions,
+                            question_set: $question_set,
+                            selected_math_operation: $selected_math_operation,
+                            current_question_count: $current_question_count ,
+                            correct_answers: $correct_answers ,
+                            least_range: $least_range ,
+                            greatest_range: $greatest_range ,
+                            settings_mode: $settings_mode, history_session_corrects: $history_session_corrects, go_update_questions: $go_update_questions)
+                        ) {
                             Text("Settings")
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-
+                    
                         
                         Spacer()
                     }
                     
                     
                     VStack {
-                        math_fun_time(question_set: $question_set, selected_math_operation: $selected_math_operation, current_question_count: $current_question_count, correct_answers: $correct_answers, is_keyboard_focused: $is_keyboard_focused)
+                        math_fun_time(
+                            question_set: $question_set,
+                            selected_math_operation: $selected_math_operation,
+                              current_question_count: $current_question_count,
+                              correct_answers: $correct_answers,
+                              is_keyboard_focused: $is_keyboard_focused,
+                              game_session_finished: $game_session_finished,
+                              function_new_game_state: {
+                                  self.new_game_state()
+                                  
+                              }
+                        )
                     }
+
                     
                 }
             }
         }
         //        .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
         .padding()
-        .onAppear(perform: new_game_state)
-
+        .onAppear {
+            new_game_state()
+        }
     }
     
     
     func new_game_state() {
+        
+        if game_session_finished {
+        store_session_into_history()
+            
+        }
+        session_count += 1
+        
         create_set_questions()
         current_question_count = 0
         correct_answers = 0
+        
+        // Reset game_session_finished
+        game_session_finished = false
     }
     
     func create_set_questions() {
@@ -92,7 +116,7 @@ struct ContentView: View {
             let new_input_1: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
             let new_input_2: Double = Double(Int.random(in: Int(least_range)...Int(greatest_range)))
             let new_question:Question = Question(questionNumber: index, input_1: new_input_1, input_2: new_input_2)
-
+            
             // Add to list and continue to loop
             create_set_questions.append(new_question)
             index += 1
@@ -100,7 +124,16 @@ struct ContentView: View {
         
         question_set = create_set_questions
     }
-
+    
+    func store_session_into_history() {
+        let new_session_count:Int = session_count
+        let new_correct_answers:Int = correct_answers
+        let new_total_questions:Int = question_set.count
+        
+        let new_save:session_info = session_info(session_number: new_session_count, correct_answers: new_correct_answers, total_questions: new_total_questions)
+        
+        history_session_corrects.append(new_save)
+    }
 }
     
 struct ContentView_Previews: PreviewProvider {
@@ -124,6 +157,11 @@ struct settings: View {
     @Binding var greatest_range: Double
     
     @Binding var settings_mode: Bool
+    
+    // History
+    @Binding var history_session_corrects: [session_info]
+    
+    @Binding var go_update_questions:Bool
     
     
     var body: some View {
@@ -175,6 +213,14 @@ struct settings: View {
                     
                 }
                 
+                Section("History") {
+                    ForEach((0..<history_session_corrects.count).reversed(), id: \.self) {
+                        let item = history_session_corrects[$0]
+                        
+                        Text("Session \(item.session_number): \(item.correct_answers) / \(item.total_questions)")
+                    }
+                }
+                
                 Section("Questions") {
                     ForEach(question_set) { question in
                         switch selected_math_operation {
@@ -215,20 +261,26 @@ struct math_fun_time: View {
     
     @State private var result:String = "waiting"
     
+    @Binding var game_session_finished: Bool
     
+    
+    
+    // RFER #4
+    var function_new_game_state:() -> Void
+
     
     var body: some View {
         return VStack {
-        
+            
             Text("Hello :3\n")
             List {
                 Section("Question #\(current_question_count + 1)"){
-
-                        Text("What is")
-                        Text("\(current_question ?? "ERROR: Question not loaded")")
+                    
+                    Text("What is")
+                    Text("\(current_question ?? "ERROR: Question not loaded")")
+                    
+                }
                 
-            }
-            
                 Section("Submission") {
                     HStack {
                         TextField("Submission", value: $user_submission, format: .number)
@@ -237,21 +289,25 @@ struct math_fun_time: View {
                         Button("Submit") {
                             user_submmited_answer()
                         }
+                        .alert("Finished",isPresented: $game_session_finished) {
+                            Button("Restart", action: function_new_game_state)
+                        }
+                       
+                        
+                    }
+                    .onSubmit { // User needs to press "Enter" to check answer
+                        user_submmited_answer()
                     }
                     
-                }
-                .onSubmit { // User needs to press "Enter" to check answer
-                    user_submmited_answer()
                 }
                 
                 Section("Result") {
                     Text("Correct answers: \(correct_answers)")
                 }
-                
-                
             }
+            .onAppear(perform: inital_launch)
+            
         }
-        .onAppear(perform: inital_launch)
         
     }
     
@@ -296,17 +352,20 @@ struct math_fun_time: View {
             print("all questions done")
         }
         
-                
+        
         user_submission = nil
-
+        
+        // Load next question if current_question is less than total amount of questions
         if new_count < total_amount_of_questions {
             load_data_of_question()
         } else {
             print("no more questions :'[ ")
+            last_question_reached()
         }
-            
+        
         assert(new_count <= question_set.count, "The new_count (index) '\(new_count)' should not be greater than or equal [>=] to the total amount of questions '\(total_amount_of_questions)'. This will cause the loading the next question to be out of array range.")
-
+        
+        
     }
     
     func check_answer_is_correct() {
@@ -316,7 +375,9 @@ struct math_fun_time: View {
         }
     }
     
-    
+    func last_question_reached() {
+        game_session_finished = true
+    }
 }
 
 extension Binding {

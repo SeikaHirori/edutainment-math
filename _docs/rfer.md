@@ -10,3 +10,6 @@
 
 - RFER #3 | Binding @FocusState by using UUID
     - https://developer.apple.com/forums/thread/682448
+
+- RFER #4 | Passing function from parent to child
+    - https://stackoverflow.com/posts/59861463/revisions
