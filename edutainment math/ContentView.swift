@@ -10,10 +10,12 @@ import SwiftUI
 struct ContentView: View {
     @State private var view_selection:String? = nil
     
+    // Settings for math questions
     @State private var amount_of_questions: Int = 5
     @State private var question_set: [Question] = [Question(questionNumber: 0, input_1: 2, input_2: 5)]
     @State private var selected_math_operation:math_operation = math_operation.multiplication
     
+    // Math problems
     @State private var least_range: Double = 2
     @State private var greatest_range: Double = 12
     
@@ -22,6 +24,9 @@ struct ContentView: View {
     
     @State private var current_question_count: Int = 0
     @State private var correct_answers: Int = 0
+    
+    // Keyboard
+    @FocusState private var is_keyboard_focused: UUID?
     
     var body: some View {
         NavigationStack {
@@ -55,11 +60,10 @@ struct ContentView: View {
                     
                     
                     VStack {
-                        math_fun_time(question_set: $question_set, selected_math_operation: $selected_math_operation, current_question_count: $current_question_count, correct_answers: $correct_answers)
+                        math_fun_time(question_set: $question_set, selected_math_operation: $selected_math_operation, current_question_count: $current_question_count, correct_answers: $correct_answers, is_keyboard_focused: $is_keyboard_focused)
                     }
                     
                 }
-                
             }
         }
         //        .navigationViewStyle(StackNavigationViewStyle()) // RFER #2
@@ -197,12 +201,18 @@ struct math_fun_time: View {
     @Binding var current_question_count: Int
     @Binding var correct_answers: Int
     
+    // Binding @FocusState by using UUID // RFER #3
+    var is_keyboard_focused: FocusState<UUID?>.Binding
+    @State var UUID_is_keyboard_focused: UUID = UUID()
+    
     @State private var current_question: String? = nil
     @State private var answer: Double? = nil
     
     @State private var user_submission: Double? = nil
     
     @State private var result:String = "waiting"
+    
+    
     
     var body: some View {
         return VStack {
@@ -218,6 +228,9 @@ struct math_fun_time: View {
             
                 Section("Submission") {
                     TextField("Submission.", value: $user_submission, format: .number)
+                        .focused(is_keyboard_focused, equals: UUID_is_keyboard_focused) // RFER #3
+                        .keyboardType(.decimalPad)
+                    
                 }
                 .onSubmit { // User needs to press "Enter" to check answer
                     user_submmited_answer()

@@ -7,3 +7,6 @@
         `.navigationViewStyle(StackNavigationViewStyle())`
     - Example provided by user "BabyJ"
         - https://developer.apple.com/forums/thread/670519
+
+- RFER #3 | Binding @FocusState by using UUID
+    - https://developer.apple.com/forums/thread/682448
