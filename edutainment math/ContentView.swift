@@ -32,11 +32,11 @@ struct ContentView: View {
     @State private var game_session_finished: Bool = false
     
     // Update game settings
-    @State private var go_update_questions: Bool = false
+    @State private var go_update_questions_with_new_settings: Bool = false
     
     // Game History
-    @State private var session_count:Int = 0
-    @State private var history_session_corrects:[session_info] = [session_info(session_number: 0, correct_answers: -1, total_questions: -1)]
+    @State private var session_count:Int = 1
+    @State private var history_session_corrects:[session_info] = []
     
     
     var body: some View {
@@ -45,14 +45,20 @@ struct ContentView: View {
                 ZStack {
                     VStack (spacing: 5) {
                         NavigationLink(destination: settings(
-                            amount_of_questions: $amount_of_questions,
-                            question_set: $question_set,
-                            selected_math_operation: $selected_math_operation,
-                            current_question_count: $current_question_count ,
-                            correct_answers: $correct_answers ,
-                            least_range: $least_range ,
-                            greatest_range: $greatest_range ,
-                            settings_mode: $settings_mode, history_session_corrects: $history_session_corrects, go_update_questions: $go_update_questions)
+                                amount_of_questions: $amount_of_questions,
+                                question_set: $question_set,
+                                selected_math_operation: $selected_math_operation,
+                                current_question_count: $current_question_count ,
+                                correct_answers: $correct_answers ,
+                                least_range: $least_range ,
+                                greatest_range: $greatest_range ,
+                                settings_mode: $settings_mode,
+                                history_session_corrects: $history_session_corrects,
+                                go_update_questions_with_new_settings: $go_update_questions_with_new_settings,
+                                function_update_game_settings: {
+                                    self.update_with_new_settings()
+                                }
+                            )
                         ) {
                             Text("Settings")
                         }
@@ -60,6 +66,11 @@ struct ContentView: View {
                     
                         
                         Spacer()
+                    }
+                    .onAppear {
+                        if go_update_questions_with_new_settings {
+                            update_with_new_settings()
+                        }
                     }
                     
                     
@@ -72,7 +83,7 @@ struct ContentView: View {
                               is_keyboard_focused: $is_keyboard_focused,
                               game_session_finished: $game_session_finished,
                               function_new_game_state: {
-                                  self.new_game_state()
+                                  self.restart_game_session()
                                   
                               }
                         )
@@ -89,21 +100,31 @@ struct ContentView: View {
         }
     }
     
+    func update_with_new_settings() {
+        new_game_state()
+    
+        // Reset go_update_questions_with_new_settings
+        go_update_questions_with_new_settings = false
+
+    }
+    
+    func restart_game_session() {
+        store_session_into_history()
+        session_count += 1
+
+        
+        new_game_state()
+        
+        // Reset game_session_finished
+        game_session_finished = false
+    }
+    
     
     func new_game_state() {
-        
-        if game_session_finished {
-        store_session_into_history()
-            
-        }
-        session_count += 1
-        
         create_set_questions()
         current_question_count = 0
         correct_answers = 0
         
-        // Reset game_session_finished
-        game_session_finished = false
     }
     
     func create_set_questions() {
@@ -161,27 +182,46 @@ struct settings: View {
     // History
     @Binding var history_session_corrects: [session_info]
     
-    @Binding var go_update_questions:Bool
+    @Binding var go_update_questions_with_new_settings:Bool
     
+    // Inherit function from parent
+    var function_update_game_settings:() -> Void
+
     
     var body: some View {
         return VStack {
             
             List {
+                Button("Manually Update") {
+                    function_update_game_settings()
+                }
+                
                 Section("Muiltiplication Table") {
-                    Stepper("Least: \(least_range.formatted())", value: $least_range, in: 2...12
-                    )
-                    
-                    Stepper("Greatest: \(greatest_range.formatted())", value: $greatest_range, in:2...12
+                    Stepper("Least: \(least_range.formatted())",
+                        value: $least_range.onChange { _ in
+                            queue_update_game_settings()
+                        },
+                            in: 2...(greatest_range-1)
+                        )
+                        
+                    Stepper("Greatest: \(greatest_range.formatted())",
+                        value: $greatest_range.onChange { _ in
+                            queue_update_game_settings()
+                        },
+                            in:(least_range+1)...12
                     )
                 }
                 
                 Section("Select amount of questions") {
                     Picker("How many questions?",
-                           selection: $amount_of_questions) {
+                           selection: $amount_of_questions.onChange { _ in
+                                queue_update_game_settings()
+                            }
+                    ) {
                         ForEach(selectable_amount, id: \.self) { num in
                             Text(String(num))
                         }
+                        
                     }
                     .pickerStyle(.segmented)
 
@@ -189,7 +229,11 @@ struct settings: View {
                 }
                 
                 Section("Math Operation") {
-                    Picker("Selected your desired operation", selection: $selected_math_operation) {
+                    Picker("Selected your desired operation",
+                           selection: $selected_math_operation.onChange { _ in
+                                queue_update_game_settings()
+                            }
+                    ) {
                     
                         ForEach(math_operation.allCases, id: \.self
                         ) {
@@ -199,7 +243,7 @@ struct settings: View {
                     .pickerStyle(.automatic)
                 }
                 
-                Section("Debugging"){
+                Section("Debugging Status"){
                     // Debugging purposes
                     VStack (alignment:.center) {
                         Text("Select amount of questions: \(amount_of_questions)")
@@ -208,16 +252,21 @@ struct settings: View {
                         
                         Text("Is it settings mode state: \(String(settings_mode))")
                         Text("Operation: \(selected_math_operation.rawValue)")
+                        Text("Queue to update game settings: \(String(go_update_questions_with_new_settings))")
                     }
                     .padding()
                     
                 }
                 
                 Section("History") {
-                    ForEach((0..<history_session_corrects.count).reversed(), id: \.self) {
-                        let item = history_session_corrects[$0]
-                        
-                        Text("Session \(item.session_number): \(item.correct_answers) / \(item.total_questions)")
+                    if history_session_corrects.isEmpty == false {
+                        ForEach((0..<history_session_corrects.count).reversed(), id: \.self) {
+                            let item = history_session_corrects[$0]
+                            
+                            Text("Session \(item.session_number): \(item.correct_answers) / \(item.total_questions)")
+                        }
+                    } else {
+                        Text("Do some math problems :3")
                     }
                 }
                 
@@ -239,6 +288,11 @@ struct settings: View {
         .backgroundStyle(.primary)
     }
     
+    
+    func queue_update_game_settings() -> () {
+        go_update_questions_with_new_settings = true
+
+    }
 }
 
 
@@ -290,7 +344,11 @@ struct math_fun_time: View {
                             user_submmited_answer()
                         }
                         .alert("Finished",isPresented: $game_session_finished) {
-                            Button("Restart", action: function_new_game_state)
+                            Button("Restart", action:{
+                                function_new_game_state()
+                                // Have to manually load new question
+                                load_data_of_question()
+                            })
                         }
                        
                         
