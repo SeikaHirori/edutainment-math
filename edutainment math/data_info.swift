@@ -53,6 +53,16 @@ struct Question: Identifiable {
         return output
     }
     
+    func difference_question() -> String {
+        let output:String = "\(input_1.formatted()) - \(input_2.formatted())"
+        return output
+            }
+    
+    func quotient_question() -> String {
+        let output:String  = "\(input_1.formatted()) / \(input_2.formatted())"
+        return output
+    }
+    
     
     
     func multiplication() -> Double {

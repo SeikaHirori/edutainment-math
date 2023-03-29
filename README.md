@@ -35,4 +35,4 @@ ___
 
 
 - [ ] Stylize game with colours and animations
-- [ ] Enable other math operation questions.
+- [x] Enable other math operation questions.

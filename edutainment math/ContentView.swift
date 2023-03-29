@@ -273,19 +273,25 @@ struct settings: View {
                         Text("Do some math problems :3")
                     }
                 }
-                
-                Section("Questions") {
-                    ForEach(question_set) { question in
-                        switch selected_math_operation {
-                            case math_operation.multiplication:
-                                Text(question.product_question())
-                            case math_operation.addition:
-                                Text(question.sum_question())
-                            default:
-                                Text("Error: WIP")
-                        }
-                    }
-                }
+//
+//                Section("Questions") {
+//                    ForEach(question_set) { question in
+//                        switch selected_math_operation {
+//                            case math_operation.multiplication:
+//                                Text(question.product_question())
+//                            case math_operation.addition:
+//                                Text(question.sum_question())
+//                            case math_operation.subtraction:
+//                                Text(question.difference_question())
+//                            case math_operation.division:
+//                                Text(question.quotient_question())
+//                            default:
+//                                Text("meep")
+//
+//                        }
+//
+//                    }
+//                }
             }
         }
         .padding()
@@ -344,6 +350,7 @@ struct math_fun_time: View {
                         TextField("Submission", value: $user_submission, format: .number)
                             .focused(is_keyboard_focused, equals: UUID_is_keyboard_focused) // RFER #3
                             .keyboardType(.decimalPad)
+                        Spacer()
                         Button("Submit") {
                             user_submmited_answer()
                         }
@@ -354,6 +361,11 @@ struct math_fun_time: View {
                                 load_data_of_question()
                             })
                         }
+                        .buttonStyle(.bordered)
+                        .controlSize(.large)
+                        .background(Color.accentColor)
+                        .foregroundColor(Color.black)
+
                        
                         
                     }
@@ -385,11 +397,21 @@ struct math_fun_time: View {
         let item = question_set[current_question_count]
         
         switch selected_math_operation {
-        case math_operation.multiplication:
-            current_question = item.product_question()
-            answer = item.multiplication()
-        default:
-            current_question = ":'("
+            case math_operation.multiplication:
+                current_question = item.product_question()
+                answer = item.multiplication()
+            case math_operation.addition:
+                current_question = item.sum_question()
+                answer = item.addition()
+            case math_operation.division:
+                current_question = item.quotient_question()
+                answer = item.division()
+            case math_operation.subtraction:
+                current_question = item.difference_question()
+                answer = item.subtraction()
+            default:
+                current_question = ":'("
+                answer = -999999
         }
         
     }
