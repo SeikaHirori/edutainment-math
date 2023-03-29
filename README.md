@@ -33,4 +33,5 @@ ___
 
 - [x] Show the player how many questions they got correct at the end of the game, then offer to let them play again.
 
+
 - [ ] Stylize game with colours and animations

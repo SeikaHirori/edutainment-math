@@ -87,6 +87,10 @@ struct ContentView: View {
                                   
                               }
                         )
+                        
+                        // RFER #5
+                        Image("PNG/Square/bear")
+                            
                     }
 
                     
