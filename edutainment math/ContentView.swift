@@ -200,7 +200,7 @@ struct settings: View {
                     function_update_game_settings()
                 }
                 
-                Section("Muiltiplication Table") {
+                Section("Range Table") {
                     Stepper("Least: \(least_range.formatted())",
                         value: $least_range.onChange { _ in
                             queue_update_game_settings()
